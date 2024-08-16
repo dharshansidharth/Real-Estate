@@ -1,6 +1,7 @@
 const express = require('express')
 const dotenv = require('dotenv').config()
 const mongoose = require('mongoose')
+const userRouter = require('./routes/userRoutes.js')
 
 try{
 mongoose.connect(process.env.MONGO)
@@ -13,6 +14,8 @@ catch(err){
 
 app = express()
 port = process.env.port
+
+app.use('/api/user' , userRouter)
 
 
 app.listen(port , () => {
