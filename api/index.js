@@ -1,6 +1,7 @@
 import express from 'express'
 import { config } from "dotenv";
 import mongoose from 'mongoose'
+import userRouter from './routers/userRouter.js'
 
 const app = express()
 config()
@@ -15,8 +16,12 @@ catch(err){
       throw err
 }
 
+app.use('/api/users' , userRouter)
+
 app.listen(port , () => {
-      console.log(`Server running in port ${port}!`)
+      console.log(`Server running in port ${port}!`) 
 })
+
+
 
 //password = cPWIKEnVr7PFVYRz
