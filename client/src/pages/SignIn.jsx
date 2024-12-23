@@ -37,6 +37,7 @@ const SignIn = () => {
       }
       setLoading(false)
       setError(null)
+      navigate('/')
     }
     
     catch(error){
@@ -49,7 +50,7 @@ const SignIn = () => {
 
   return (
     <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-center text-3xl font-semibold my-7'>Sign In</h1>
+      <h1 className='text-center text-3xl font-semibold my-7'>Sign Up</h1>
       <form onSubmit = {(e) => handleSubmit(e)} className='flex flex-col gap-4'>
         <input type="text"
           placeholder='username'
@@ -64,9 +65,9 @@ const SignIn = () => {
         </button>
       </form>
       <div className='flex gap-2 mt-3'>
-        <p>Have an account?</p>
-        <Link to={'\sign-in'} className='text-blue-600 underline'>
-          Sign In
+        <p>Don't have an account?</p>
+        <Link to={'\sign-up'} className='text-blue-600 underline'>
+          Sign Up
         </Link>
       </div>
       {error &&
