@@ -3,6 +3,7 @@ import { config } from "dotenv";
 import mongoose from 'mongoose'
 import userRouter from './routers/userRouter.js'
 import authRouter from './routers/authRouter.js'
+import crypto from 'crypto'
 
 const app = express()
 config()
@@ -31,6 +32,8 @@ app.use((err , req , res , next) => {
             message,
       })
 })
+
+// console.log(crypto.randomBytes(64).toString('hex'))
 
 app.listen(port , () => {
       console.log(`Server running in port ${port}!`) 
