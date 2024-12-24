@@ -36,3 +36,31 @@ export const signin = async (req, res, next) => {
       }
 
 }
+
+export const googleSign = async (req , res , next) => {
+      const {name , email , photo} = req.body
+      console.log({name , email, photo})
+      try{
+            const validUser = await User.findOne({email})
+            if(validUser){
+                  const token = jwt.sign({id : validUser._id} , process.env.JWT_SECRET)
+                  const {password , ...rest} = validUser._doc
+                  jwt.cookie('access_token_google_old' , token , {httpOnly : true}).status(200).json(rest)
+            }
+
+            else{
+                  const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8)
+                  const newName = name.split(" ").join('').toLowerCase() + Math.random().toString(36).slice(-4)
+                  const hashedPassword = bcryptjs.hashSync(generatedPassword , 10)
+                  const newUser = new User({username : newName , email , password : hashedPassword , avatar: photo})
+                  newUser.save()
+                  const token = jwt.sign({id : newUser._id} , process.env.JWT_SECRET)
+                  console.log(newUser)
+                  const {password , ...rest} = newUser._doc
+                  res.cookie('access_token_google_new' , token , {httpOnly : true}).status(200).json(rest)
+            }
+
+      }catch(err){
+            next(err)
+      }
+}
