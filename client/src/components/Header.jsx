@@ -2,13 +2,10 @@ import React from 'react'
 import { FaSearch } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { current } from '@reduxjs/toolkit'
 
 const Header = () => {
-      const { currentUser } = useSelector(state => state.user)
-      const avatarUrl = currentUser ? (currentUser.avatar.split('=')[0]) : ('https://via.placeholder.com/150')
-
-      console.log(avatarUrl)
+      const { currentUser } = useSelector((state) => state.user)
+      console.log(currentUser)
 
       return (
             <header className='bg-slate-200 shadow-md'>

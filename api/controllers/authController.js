@@ -55,7 +55,6 @@ export const googleSign = async (req , res , next) => {
                   const newUser = new User({username : newName , email , password : hashedPassword , avatar: photo})
                   newUser.save()
                   const token = jwt.sign({id : newUser._id} , process.env.JWT_SECRET)
-                  console.log(newUser)
                   const {password , ...rest} = newUser._doc
                   res.cookie('access_token_google_new' , token , {httpOnly : true}).status(200).json(rest)
             }
