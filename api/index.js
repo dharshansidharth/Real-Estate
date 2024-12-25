@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import userRouter from './routers/userRouter.js'
 import authRouter from './routers/authRouter.js'
 import crypto from 'crypto'
+import cookieParser from 'cookie-parser';
 
 const app = express()
 config()
@@ -11,6 +12,7 @@ const port = process.env.PORT
 const url = process.env.MONGO_URL
 
 app.use(express.json())
+app.use(cookieParser())
 
 try{
       mongoose.connect(url)

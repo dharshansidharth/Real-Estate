@@ -16,8 +16,6 @@ export const signup = async (req, res, next) => {
       }).catch(err => {
             next(err)
       })
-
-      // res.status(404).send('Unexpected error occured!!')  
 }
 
 export const signin = async (req, res, next) => {
@@ -42,10 +40,11 @@ export const googleSign = async (req , res , next) => {
       console.log({name , email, photo})
       try{
             const validUser = await User.findOne({email})
+            console.log(validUser)
             if(validUser){
                   const token = jwt.sign({id : validUser._id} , process.env.JWT_SECRET)
                   const {password , ...rest} = validUser._doc
-                  res.cookie('access_token_google_old' , token , {httpOnly : true}).status(200).json(rest)
+                  res.cookie('access_token' , token , {httpOnly : true}).status(200).json(rest)
             }
 
             else{
@@ -56,7 +55,7 @@ export const googleSign = async (req , res , next) => {
                   newUser.save()
                   const token = jwt.sign({id : newUser._id} , process.env.JWT_SECRET)
                   const {password , ...rest} = newUser._doc
-                  res.cookie('access_token_google_new' , token , {httpOnly : true}).status(200).json(rest)
+                  res.cookie('access_token' , token , {httpOnly : true}).status(200).json(rest)
             }
 
       }catch(err){

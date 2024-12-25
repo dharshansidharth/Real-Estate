@@ -1,16 +1,31 @@
-import { current } from '@reduxjs/toolkit'
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { useRef } from 'react'
+import { useState } from 'react'
 
 const Profile = () => {
   const { currentUser } = useSelector((state) => state.user)
+  console.log(currentUser)
+  const [formData , setFormData] = useState({
+    username : currentUser.n
+  })
+  const fileRef = useRef(null)
+
+  function handleChange(e) {
+    e.preventDefault()
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value
+    })
+  }
 
   return (
     <div className = 'max-w-lg p-3 mx-auto '>
       <h1 className = 'font-semibold text-3xl text-center mt-7'>Profile</h1>
       <form className = 'flex flex-col max-w-lg gap-4'>
+        <input type="file" ref = {fileRef} hidden accept = 'image/*' />
 
-        <img src={currentUser.avatar} alt='profile-pic' className = ' h-24 w-24 rounded-full object-cover self-center my-5 cursor-pointer'/>
+        <img onClick = {() => fileRef.current.click() } src={currentUser.avatar} alt='profile-pic' className = ' h-24 w-24 rounded-full object-cover self-center my-5 cursor-pointer'/>
 
         <input type='text' placeholder='username' id = 'username' className = 'focus:outline-none border p-3 rounded-lg' />
 
@@ -18,7 +33,7 @@ const Profile = () => {
 
         <input type='password' placeholder='password' id = 'password' className = 'focus:outline-none border p-3 rounded-lg' />
 
-        <button className = 'bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80 cursor-pointer'>
+        <button onChange = {() => {handleChange()}}className = 'bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80 cursor-pointer'>
           update
         </button>
 
