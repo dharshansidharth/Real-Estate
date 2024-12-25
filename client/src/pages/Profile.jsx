@@ -2,9 +2,16 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useRef } from 'react'
 import { useState } from 'react'
-import { updateUserStart, updateUserSuccess, updateUserFail } from '../redux/users/UserSlice.js'
+import {
+  updateUserStart,
+  updateUserSuccess,
+  updateUserFail,
+  deleteUserStart,
+  deleteUserSuccess,
+  deleteUserFail
+} from '../redux/users/UserSlice.js'
 import { useDispatch } from 'react-redux'
-import { toast } from 'react-toastify' 
+import { toast } from 'react-toastify'
 
 const Profile = () => {
   const { currentUser, error, loading } = useSelector((state) => state.user)
@@ -15,7 +22,6 @@ const Profile = () => {
   const fileRef = useRef(null)
   const dispatch = useDispatch()
 
-  console.log(loading)
 
   function handleChange(e) {
 
@@ -51,7 +57,7 @@ const Profile = () => {
           draggable: true,
           progress: undefined,
           theme: "colored",
-          });
+        });
         return
       }
 
@@ -65,7 +71,7 @@ const Profile = () => {
         draggable: true,
         progress: undefined,
         theme: "colored",
-        });
+      });
 
     }
     catch (err) {
@@ -78,11 +84,69 @@ const Profile = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        });
+      });
     }
 
-    
 
+
+  }
+
+  async function handleDelete(e) {
+    e.preventDefault()
+
+    try {
+      dispatch(deleteUserStart())
+      const res = await fetch(`/api/users/delete/${currentUser._id}`, {
+        method: 'DELETE',
+      })
+
+      console.log(res)
+      
+      const data = await res.json
+
+      if (data.success === false) {
+        dispatch(deleteUserFail(data.message))
+        toast.error(data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        return
+      }
+      console.log('hello')
+      dispatch(deleteUserSuccess(data))
+      toast.success('Deletion Success!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
+    }
+
+    catch (err) {
+      // console.log('catch')
+      dispatch(deleteUserFail(err.message))
+      toast.error(data.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
   }
 
   return (
@@ -99,14 +163,14 @@ const Profile = () => {
 
         <input onChange={(e) => handleChange(e)} type='password' placeholder='password' id='password' className='focus:outline-none border p-3 rounded-lg' />
 
-        <button disabled = {loading} className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80 cursor-pointer'>
+        <button disabled={loading} className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80 cursor-pointer'>
           {loading ? 'Loading...' : 'Update'}
         </button>
 
       </form>
 
       <div className='flex justify-between my-3 text-md font-semibold'>
-        <span className='text-red-500 cursor-pointer'>Delete Account</span>
+        <span onClick={(e) => { handleDelete(e) }} className='text-red-500 cursor-pointer hover:opacity-95'>Delete Account</span>
         <span className='text-green-700 cursor-pointer'>Sign Out</span>
       </div>
 

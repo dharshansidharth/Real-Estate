@@ -1,5 +1,6 @@
 import User from "../models/UserModel.js"
 import bcryptjs from 'bcryptjs'
+import { errorHandler } from "../utils/error.js"
 
 export const test = (req, res) => {
   res.send('test success!')
@@ -29,3 +30,11 @@ export const updateUser = async (req, res, next) => {
     next(err)
   }
 }   
+
+export const deleteUser = async (req , res , next) => {
+  // console.log('hello')
+  if(req.user.id !== req.params.id){next(errorHandler(401 , 'You can only delete your account!'))}
+  await User.deleteOne({_id : req.user.id})
+  res.clearCookie('access_token')
+  res.status(200).send('user deleted successfully!')
+}

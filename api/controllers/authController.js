@@ -37,10 +37,10 @@ export const signin = async (req, res, next) => {
 
 export const googleSign = async (req , res , next) => {
       const {name , email , photo} = req.body
-      console.log({name , email, photo})
+      // console.log({name , email, photo})
       try{
             const validUser = await User.findOne({email})
-            console.log(validUser)
+            // console.log(validUser)
             if(validUser){
                   const token = jwt.sign({id : validUser._id} , process.env.JWT_SECRET)
                   const {password , ...rest} = validUser._doc
