@@ -62,3 +62,14 @@ export const googleSign = async (req , res , next) => {
             next(err)
       }
 }
+
+export const signout = (req , res , next) => {
+      try{
+            res.clearCookie('access_token')
+            res.status(200).send('Sign out successful!')
+      }
+      catch(err){
+            console.log('error')
+            next(err)
+      }
+} 

@@ -8,7 +8,10 @@ import {
   updateUserFail,
   deleteUserStart,
   deleteUserSuccess,
-  deleteUserFail
+  deleteUserFail,
+  signoutUserStart,
+  signoutUserSuccess,
+  signoutUserFail,
 } from '../redux/users/UserSlice.js'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -149,6 +152,28 @@ const Profile = () => {
     }
   }
 
+  async function handleSignout(e){
+    e.preventDefault()
+    try{
+      dispatch(signoutUserStart())
+      const res = await fetch('/api/auth/signout' , {
+        method : 'GET',
+      })
+
+      const data = await res.json
+
+      if(data.success === false){
+        dispatch(signoutUserFail(data.message))
+        return
+      }
+      dispatch(signoutUserSuccess())
+      
+    }
+    catch(err){
+      dispatch(signoutUserFail(err.message))
+    }
+  }
+
   return (
     <div className='max-w-lg p-3 mx-auto '>
       <h1 className='font-semibold text-3xl text-center mt-7'>Profile</h1>
@@ -170,8 +195,8 @@ const Profile = () => {
       </form>
 
       <div className='flex justify-between my-3 text-md font-semibold'>
-        <span onClick={(e) => { handleDelete(e) }} className='text-red-500 cursor-pointer hover:opacity-95'>Delete Account</span>
-        <span className='text-green-700 cursor-pointer'>Sign Out</span>
+        <span onClick = {(e) => { handleDelete(e) }} className='text-red-500 cursor-pointer hover:opacity-95'>Delete Account</span>
+        <span onClick = {(e) => {handleSignout(e)}} className='text-green-700 cursor-pointer hover:opacity-95'>Sign Out</span>
       </div>
 
     </div>
