@@ -36,7 +36,7 @@ const Header = () => {
                               <Link to='/profile'>
                                     {currentUser ? (
                                          <img
-                                         src={currentUser.avatar}
+                                         src={currentUser.avatar || 'https://tse2.mm.bing.net/th?id=OIP.lF8ztkPyzv_NrpD7V8YYVAHaHa&pid=Api&P=0&h=180' }
                                          alt="Profile"
                                          className="w-7 h-7 rounded-full object-cover"
                                          style={{ display: 'block' }}
