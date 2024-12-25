@@ -5,3 +5,20 @@
 body{
       background-color: rgb(241 , 245 , 241);
 }
+
+/* Custom CSS for Toast Notifications */
+
+/* Success Toast */
+.toast-success {
+      background-color: #4caf50;  /* Green background for success */
+      color: white;  /* White text */
+      border-radius: 5px;  /* Rounded corners */
+}
+    
+/* Error Toast */
+.toast-error {
+      background-color: #f44336;  /* Red background for errors */
+      color: white;  /* White text */
+      border-radius: 5px;  /* Rounded corners */
+}
+    
