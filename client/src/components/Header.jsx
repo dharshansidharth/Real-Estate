@@ -5,9 +5,11 @@ import { useSelector } from 'react-redux'
 
 const Header = () => {
       const { currentUser } = useSelector((state) => state.user)
+      console.log(currentUser)
 
       return (
             <header className='bg-slate-200 shadow-md'>
+                  {/* <img src='../pages/img.jpg' alt='dummy'/> */}
                   <div className='flex justify-between mx-auto max-w-6xl items-center p-3'>
                         <Link to='/'>
                               <h1 className='font-bold text-sm sm:text-xl flex flex-wrap'>

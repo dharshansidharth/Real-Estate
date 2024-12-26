@@ -5,6 +5,7 @@ import userRouter from './routers/userRouter.js'
 import authRouter from './routers/authRouter.js'
 import crypto from 'crypto'
 import cookieParser from 'cookie-parser';
+import listingRouter from './routers/listingRouter.js'
 
 const app = express()
 config()
@@ -24,6 +25,7 @@ catch(err){
 
 app.use('/api/users' , userRouter)
 app.use('/api/auth' , authRouter)
+app.use('/api/listing' , listingRouter)
 
 app.use((err , req , res , next) => {
       const statusCode = err.statusCode || 500
