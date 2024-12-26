@@ -6,6 +6,7 @@ import authRouter from './routers/authRouter.js'
 import crypto from 'crypto'
 import cookieParser from 'cookie-parser';
 import listingRouter from './routers/listingRouter.js'
+import cors from 'cors'
 
 const app = express()
 config()
@@ -14,6 +15,7 @@ const url = process.env.MONGO_URL
 
 app.use(express.json())
 app.use(cookieParser())
+app.use(cors())
 
 try{
       mongoose.connect(url)
