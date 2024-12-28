@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux'
 
 const Header = () => {
       const { currentUser } = useSelector((state) => state.user)
-      console.log(currentUser)
 
       return (
             <header className='bg-slate-200 shadow-md'>
@@ -41,6 +40,7 @@ const Header = () => {
                                          alt="Profile"
                                          className="w-7 h-7 rounded-full object-cover"
                                          style={{ display: 'block' }}
+                                         loading = 'lazy'
                                        />
                                        
                                     ) : (

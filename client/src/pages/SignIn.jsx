@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { signInStart, signInSuccess, signInFail } from '../redux/users/UserSlice'
 import OAuth from '../components/OAuth'
+import { toast } from 'react-toastify'
 
 const SignIn = () => {
   const [formData, setFormData] = useState({})
@@ -34,6 +35,16 @@ const SignIn = () => {
       console.log(data)
       if (data.success === false) {
         dispatch(signInFail(data.message))
+        toast.error(data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
         return
       }
       dispatch(signInSuccess(data))
@@ -42,6 +53,16 @@ const SignIn = () => {
 
     catch (error) {
       dispatch(signInFail(error.message))
+      toast.error(error.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   }
 
@@ -70,9 +91,6 @@ const SignIn = () => {
           Sign Up
         </Link>
       </div>
-      {error &&
-        <p className='text-red-500 mt-5'>{error}</p>
-      }
     </div>
   )
 }
