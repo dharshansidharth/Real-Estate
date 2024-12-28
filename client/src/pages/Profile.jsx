@@ -22,6 +22,8 @@ const Profile = () => {
   const [formData, setFormData] = useState({
     avatar: currentUser.avatar,
   })
+  const [showListingsError, setShowListingsError] = useState(null)
+  const [listings, setListings] = useState([])
   const [successStatus, setSuccessStatus] = useState(false)
   const fileRef = useRef(null)
   const dispatch = useDispatch()
@@ -105,7 +107,7 @@ const Profile = () => {
       })
 
       console.log(res)
-      
+
       const data = await res.json
 
       if (data.success === false) {
@@ -153,25 +155,69 @@ const Profile = () => {
     }
   }
 
-  async function handleSignout(e){
+  async function handleSignout(e) {
     e.preventDefault()
-    try{
+    try {
       dispatch(signoutUserStart())
-      const res = await fetch('/api/auth/signout' , {
-        method : 'GET',
+      const res = await fetch('/api/auth/signout', {
+        method: 'GET',
       })
 
       const data = await res.json
 
-      if(data.success === false){
+      if (data.success === false) {
         dispatch(signoutUserFail(data.message))
+
         return
       }
       dispatch(signoutUserSuccess())
-      
+
     }
-    catch(err){
+    catch (err) {
       dispatch(signoutUserFail(err.message))
+    }
+  }
+
+  const handleShowListings = async (e) => {
+    e.preventDefault()
+    try {
+      setShowListingsError(null)
+
+      const res = await fetch(`/api/users/listings/${currentUser._id}`, {
+        method: 'GET',
+      })
+
+      const data = await res.json()
+      if (data.success === false) {
+        setShowListingsError(data.message)
+        toast.error(data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        return
+      }
+      setListings(data)
+      setShowListingsError(null)
+      console.log(listings)
+    }
+    catch (err) {
+      setShowListingsError(err.message)
+      toast.error(err.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   }
 
@@ -193,16 +239,46 @@ const Profile = () => {
           {loading ? 'Loading...' : 'Update'}
         </button>
 
-        <Link to = '/create-listing' className = 'bg-green-700 text-white uppercase p-3 rounded-lg text-center hover:opacity-95'>
+        <Link to='/create-listing' className='bg-green-700 text-white uppercase p-3 rounded-lg text-center hover:opacity-95'>
           Create Listing
         </Link>
 
       </form>
 
       <div className='flex justify-between my-3 text-md font-semibold'>
-        <span onClick = {(e) => { handleDelete(e) }} className='text-red-500 cursor-pointer hover:opacity-95'>Delete Account</span>
-        <span onClick = {(e) => {handleSignout(e)}} className='text-green-700 cursor-pointer hover:opacity-95'>Sign Out</span>
+        <span onClick={(e) => { handleDelete(e) }} className='text-red-500 cursor-pointer hover:opacity-95'>Delete Account</span>
+        <span onClick={(e) => { handleSignout(e) }} className='text-green-700 cursor-pointer hover:opacity-95'>Sign Out</span>
       </div>
+
+      <button onClick={(e) => { handleShowListings(e) }} type='button' className='text-center w-full mt-4 text-green-700 font-semibold text-md'>
+        Show Listings
+      </button>
+      {listings && listings.length > 0 &&
+        <div>
+          <h1 className = 'text-center my-6 font-bold text-2xl '>Your Listings</h1>
+        {listings.map((listing) => {
+          return (
+            <div key={listing._id} className='flex border border-slate-300 rounded-lg justify-between items-center gap-5 p-3 m-3'>
+              <Link to={`/listing/${listing._id}`}>
+                <img src={listing.imageUrls[0]}
+                  alt="cover image"
+                  className='w-20 h-20 object-contain'
+                />
+              </Link >
+              <Link to={`/listing/${listing._id}`}
+                className='flex-1 text-slate-700 hover:underline truncate font-semibold'
+              >
+                <p >{listing.name}</p>
+              </Link>
+              <div className='flex flex-col items-center'>
+                <p className='text-red-800 font-semibold'>Delete</p>
+                <p className='text-green-700 font-semibold'>Edit</p>
+              </div>
+            </div>
+          )
+        })}
+        </div>
+      }
 
     </div>
   )
