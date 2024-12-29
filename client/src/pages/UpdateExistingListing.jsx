@@ -383,7 +383,7 @@ const UpdateExistingListing = () => {
                                                       id='regularPrice'
                                                       required
                                                       min='50'
-                                                      max='100000'
+                                                      max='10000000'
                                                       className='border border-gray-400 rounded-lg p-3'
                                                       onChange={(e) => { handleInputChange(e) }}
                                                       value={formData.regularPrice}
@@ -399,7 +399,7 @@ const UpdateExistingListing = () => {
                                                       id='discountPrice'
                                                       required
                                                       min='0'
-                                                      max='100000'
+                                                      max='1000000'
                                                       className='border border-gray-400 rounded-lg p-3'
                                                       onChange={(e) => { handleInputChange(e) }}
                                                       value={formData.discountPrice}
