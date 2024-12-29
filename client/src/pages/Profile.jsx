@@ -16,6 +16,7 @@ import {
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const Profile = () => {
   const { currentUser, error, loading } = useSelector((state) => state.user)
@@ -25,9 +26,11 @@ const Profile = () => {
   const [showListingsError, setShowListingsError] = useState(null)
   const [listings, setListings] = useState([])
   const [successStatus, setSuccessStatus] = useState(false)
-  const [deletelistingError , setDeleteError] = useState(null)
+  const [deletelistingError, setDeleteError] = useState(null)
+  const [editError, setEditError] = useState(null)
   const fileRef = useRef(null)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
 
   function handleChange(e) {
@@ -223,13 +226,13 @@ const Profile = () => {
   }
 
   const handleDeleteListing = async (listingId) => {
-    try{
+    try {
       setDeleteError(null)
-      const res = await fetch(`/api/listing/delete/${listingId}` , {
-        method : 'DELETE',
+      const res = await fetch(`/api/listing/delete/${listingId}`, {
+        method: 'DELETE',
       })
       const data = await res.json
-      if(data.success === false){
+      if (data.success === false) {
         setDeleteError(data.message)
         toast.error(data.message, {
           position: "top-right",
@@ -247,7 +250,7 @@ const Profile = () => {
       setListings(listings.filter(listing => listing._id !== listingId))
       console.log(listings)
     }
-    catch(err){
+    catch (err) {
       setDeleteError(err.message)
       toast.error(err.message, {
         position: "top-right",
@@ -260,6 +263,10 @@ const Profile = () => {
         theme: "colored",
       });
     }
+  }
+
+  const handleEditListing = async (listingId) => {
+
   }
 
   return (
@@ -296,28 +303,30 @@ const Profile = () => {
       </button>
       {listings && listings.length > 0 &&
         <div>
-          <h1 className = 'text-center my-6 font-bold text-2xl '>Your Listings</h1>
-        {listings.map((listing) => {
-          return (
-            <div key={listing._id} className='flex border border-slate-300 rounded-lg justify-between items-center gap-5 p-3 m-3'>
-              <Link to={`/listing/${listing._id}`}>
-                <img src={listing.imageUrls[0]}
-                  alt="cover image"
-                  className='w-20 h-20 object-contain'
-                />
-              </Link >
-              <Link to={`/listing/${listing._id}`}
-                className='flex-1 text-slate-700 hover:underline truncate font-semibold'
-              >
-                <p >{listing.name}</p>
-              </Link>
-              <div className='flex flex-col items-center'>
-                <p onClick = {() => handleDeleteListing(listing._id)} className='text-red-800 font-semibold cursor-pointer'>Delete</p>
-                <p onClick = {() => handleEditListing(listing._id)} className='text-green-700 font-semibold cursor-pointer'>Edit</p>
+          <h1 className='text-center my-6 font-bold text-2xl '>Your Listings</h1>
+          {listings.map((listing) => {
+            return (
+              <div key={listing._id} className='flex border border-slate-300 rounded-lg justify-between items-center gap-5 p-3 m-3'>
+                <Link to={`/listing/${listing._id}`}>
+                  <img src={listing.imageUrls[0]}
+                    alt="cover image"
+                    className='w-20 h-20 object-contain'
+                  />
+                </Link >
+                <Link to={`/listing/${listing._id}`}
+                  className='flex-1 text-slate-700 hover:underline truncate font-semibold'
+                >
+                  <p >{listing.name}</p>
+                </Link>
+                <div className='flex flex-col items-center'>
+                  <p onClick={() => handleDeleteListing(listing._id)} className='text-red-800 font-semibold cursor-pointer'>Delete</p>
+                  <Link to = {`/update-listing/${listing._id}`}>
+                    <p onClick={() => handleEditListing(listing._id)} className='text-green-700 font-semibold cursor-pointer'>Edit</p>
+                  </Link>
+                </div>
               </div>
-            </div>
-          )
-        })}
+            )
+          })}
         </div>
       }
 
