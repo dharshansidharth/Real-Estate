@@ -1,4 +1,5 @@
 import Listing from "../models/listingModel.js"
+import { errorHandler } from "../utils/error.js";
 
 export const createListing = async (req, res, next) => {
   try {
@@ -8,3 +9,19 @@ export const createListing = async (req, res, next) => {
     next(error);
   }
 };
+
+export const deleteListing = async (req, res, next) => {
+  const listing = await Listing.findById(req.params.id)
+  if (!listing) { return next(errorHandler(401, 'No user found!')) }
+  if (listing.userRef !== req.user.id) { return next(errorHandler(401, 'You can only delete your listings!')) }
+
+
+  try {
+    await Listing.findByIdAndDelete(req.params.id)
+    res.status(200).send('listing deleted succesfully!')
+
+  }
+  catch (err) {
+    next(errorHandler(404, 'Something went wrong!'))
+  }
+}

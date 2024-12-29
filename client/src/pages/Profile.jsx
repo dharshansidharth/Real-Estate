@@ -25,6 +25,7 @@ const Profile = () => {
   const [showListingsError, setShowListingsError] = useState(null)
   const [listings, setListings] = useState([])
   const [successStatus, setSuccessStatus] = useState(false)
+  const [deletelistingError , setDeleteError] = useState(null)
   const fileRef = useRef(null)
   const dispatch = useDispatch()
 
@@ -221,6 +222,46 @@ const Profile = () => {
     }
   }
 
+  const handleDeleteListing = async (listingId) => {
+    try{
+      setDeleteError(null)
+      const res = await fetch(`/api/listing/delete/${listingId}` , {
+        method : 'DELETE',
+      })
+      const data = await res.json
+      if(data.success === false){
+        setDeleteError(data.message)
+        toast.error(data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        return
+      }
+      setDeleteError(null)
+      setListings(listings.filter(listing => listing._id !== listingId))
+      console.log(listings)
+    }
+    catch(err){
+      setDeleteError(err.message)
+      toast.error(err.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+  }
+
   return (
     <div className='max-w-lg p-3 mx-auto '>
       <h1 className='font-semibold text-3xl text-center mt-7'>Profile</h1>
@@ -271,8 +312,8 @@ const Profile = () => {
                 <p >{listing.name}</p>
               </Link>
               <div className='flex flex-col items-center'>
-                <p className='text-red-800 font-semibold'>Delete</p>
-                <p className='text-green-700 font-semibold'>Edit</p>
+                <p onClick = {() => handleDeleteListing(listing._id)} className='text-red-800 font-semibold cursor-pointer'>Delete</p>
+                <p onClick = {() => handleEditListing(listing._id)} className='text-green-700 font-semibold cursor-pointer'>Edit</p>
               </div>
             </div>
           )
