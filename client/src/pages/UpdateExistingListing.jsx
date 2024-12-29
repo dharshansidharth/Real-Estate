@@ -34,13 +34,22 @@ const UpdateExistingListing = () => {
 
       useEffect(() => {
             const fetchListing = async () => {
-                  const listingId = params.listingId
-                  const res = await fetch(`/api/listing/getListing/${listingId}`)
-                  const data = await res.json()
-                  setFormData(data)
+                  try {
+                        const listingId = params.listingId
+                        const res = await fetch(`/api/listing/getListing/${listingId}`)
+                        const data = await res.json()
+                        if (data.success === false) {
+                              console.log(data.message)
+                              return
+                        }
+                        setFormData(data)
+                  }
+                  catch(err){
+                        console.log(err.message)
+                  }
             }
             fetchListing()
-      } , [])
+      }, [])
 
       function handleFileChange(e) {
             const selectedFiles = e.target.files;
@@ -185,7 +194,7 @@ const UpdateExistingListing = () => {
                               progress: undefined,
                               theme: "colored",
                         });
-                        return 
+                        return
                   }
                   setError(null)
                   setLoadingSubmit(true)
@@ -428,7 +437,7 @@ const UpdateExistingListing = () => {
                                     {loadingSubmit ? 'Updating...' : 'Update Listing'}
                               </button>
                               {error &&
-                                    <p className = 'text-red-600 '>{error}</p>
+                                    <p className='text-red-600 '>{error}</p>
                               }
 
                               {formData.imageUrls.length > 0 &&
