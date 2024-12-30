@@ -10,6 +10,7 @@ import Header from './components/Header.jsx'
 import PrivateRoutes from './components/PrivateRoutes.jsx'
 import UpdateExistingListing from './pages/UpdateExistingListing.jsx'
 import Listing from './pages/Listing.jsx'
+import Search from './pages/Search.jsx'
 
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/listing/:listingId' element={<Listing />} />
+        <Route path = '/search' element = {<Search />} />
         <Route element = {<PrivateRoutes />}>
           <Route path='/profile' element={<Profile />} />
           <Route path = '/create-listing'  element = {<CreateListing />} />
