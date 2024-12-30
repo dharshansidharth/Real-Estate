@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import ListItem from '../components/ListItem.jsx'
 
 const Search = () => {
   const navigate = useNavigate()
@@ -15,7 +16,6 @@ const Search = () => {
     sort: 'created_at',
     order: 'desc'
   })
-  console.log(listing)
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -175,9 +175,27 @@ const Search = () => {
       </div>
 
       {/*listing side*/}
-      <div>
+      <div className = 'flex-1'>
         <h1 className='text-3xl text-slate-700 border-b p-3 mt-5 '>Listing Results:</h1>
+        <div className = 'p-7 flex flex-wrap gap-4'>
+
+        {!loading && listing.length == 0 &&
+        <p className = 'text-xl text-slate-700 '>No listings found!</p>
+        }
+
+        {loading &&
+          <p className = 'text-xl text-center w-full'>Loading...</p> 
+        }
+
+        {!loading && listing &&
+        listing.map((listing) => (<ListItem key = {listing._id} listing = {listing} />)) 
+        }
+
       </div>
+      </div>
+
+      
+
     </div>
   )
 }
