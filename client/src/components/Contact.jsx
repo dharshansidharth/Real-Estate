@@ -56,7 +56,7 @@ const Contact = ({ listing }) => {
                                     className='p-3 rounded-lg border border-slate-300 shadow-lg w-full focus:outline-none'
                               ></textarea>
                               <Link
-                              to = {`mailto:${landlord.email}?subject=Regarding ${listing.name}&body=${message}`}
+                              to = {`mailto:${landlord.email}?subject=Regarding ${listing}`}
                               className='bg-slate-700 text-white text-center p-3 uppercase rounded-lg hover:opacity-95'
                               >
                                     Send Message
