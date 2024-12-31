@@ -8,7 +8,7 @@ export default function ListingItem({ listing }) {
         <img
           src={
             listing.imageUrls[0] ||
-            'https://in.images.search.yahoo.com/search/images;_ylt=AwrKHAWNAHNntQIAkbu7HAx.;_ylu=Y29sbwNzZzMEcG9zAzEEdnRpZAMEc2VjA3Nj?type=E210IN885G91852&p=home+images+in+hd&fr=mcafee&th=266&tw=474&imgurl=https%3A%2F%2Fwallpaperaccess.com%2Ffull%2F3060221.jpg&rurl=https%3A%2F%2Fwallpaperaccess.com%2Fhome-hd&size=359KB&name=Home+HD+Wallpapers+-+Top+Free+Home+HD+Backgrounds+-+WallpaperAccess&oid=1&h=900&w=1600&turl=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.4CMRLfMYrhz87yMpTl8tSQHaEK%26pid%3DApi&tt=Home+HD+Wallpapers+-+Top+Free+Home+HD+Backgrounds+-+WallpaperAccess&sigr=Xy1j2NFmyMlS&sigit=RRcLBAVUHtmC&sigi=BdelqRjJW9Dv&sign=2VG_qsxLAeRh&sigt=2VG_qsxLAeRh'
+            'https://53.fs1.hubspotusercontent-na1.net/hub/53/hubfs/Sales_Blog/real-estate-business-compressor.jpg?width=595&height=400&name=real-estate-business-compressor.jpg'
           }
           alt='listing cover'
           className='h-[300px] sm:h-[200px] w-full object-cover hover:scale-105 transition-scale duration-300'

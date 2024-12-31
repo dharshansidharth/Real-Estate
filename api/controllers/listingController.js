@@ -55,12 +55,11 @@ export const getListing = async (req , res , next) => {
   catch(err){
     next(errorHandler(404 , 'Something went wrong!'))
   }
-
+ 
 }
 
 export const getListings = async (req , res , next) => {
   try{
-    console.log(req.query)
     const limit = parseInt(req.query.limit) || 9
     const startIndex = parseInt(req.query.startIndex) || 0
 
