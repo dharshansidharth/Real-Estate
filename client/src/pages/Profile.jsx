@@ -32,15 +32,76 @@ const Profile = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-
-  function handleChange(e) {
-
-    e.preventDefault()
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value
-    })
+  async function handleChange(e) {
+    e.preventDefault();
+  
+    if (e.target.type === "file") {
+      const file = e.target.files[0]; // Access the first selected file
+      if (!file) {
+        toast.error("No file selected!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        return;
+      }
+  
+      const data = new FormData();
+      data.append("file", file);
+      data.append("upload_preset", "Real_Estate");
+      data.append("cloud_name", "dgmuyffse");
+  
+      try {
+        const res = await fetch(`https://api.cloudinary.com/v1_1/dgmuyffse/image/upload`, {
+          method: "POST",
+          body: data,
+        });
+  
+        const result = await res.json();
+  
+        if (result.secure_url) {
+          setFormData({
+            ...formData,
+            avatar: result.secure_url, // Update the formData with the image URL
+          });
+          toast.success("Image uploaded successfully!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        } else {
+          throw new Error("Failed to upload image");
+        }
+      } catch (err) {
+        toast.error("Error uploading image. Please try again.", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+    } else {
+      setFormData({
+        ...formData,
+        [e.target.id]: e.target.value,
+      });
+    }
   }
+  
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -55,6 +116,7 @@ const Profile = () => {
       })
 
       const data = await res.json()
+      console.log(data)
 
       if (data.success === false) {
         dispatch(updateUserFail(data.message))
@@ -265,17 +327,15 @@ const Profile = () => {
     }
   }
 
-  const handleEditListing = async (listingId) => {
 
-  }
 
   return (
     <div className='max-w-lg p-3 mx-auto '>
       <h1 className='font-semibold text-3xl text-center mt-7'>Profile</h1>
       <form onSubmit={(e) => { handleSubmit(e) }} className='flex flex-col max-w-lg gap-4'>
-        <input type="file" ref={fileRef} hidden accept='image/*' />
+        <input onChange={(e) => { handleChange(e) }} type="file" ref={fileRef} hidden accept='image/*' />
 
-        <img onClick={() => fileRef.current.click()} src={currentUser.avatar} alt='profile-pic' className=' h-24 w-24 rounded-full object-cover self-center my-5 cursor-pointer' />
+        <img onChange={(e) => { handleChange(e) }} onClick={() => fileRef.current.click()} src={currentUser.avatar} id='avatar' alt='profile-pic' className=' h-24 w-24 rounded-full object-cover self-center my-5 cursor-pointer' />
 
         <input onChange={(e) => handleChange(e)} defaultValue={currentUser.username} type='text' placeholder='username' id='username' className='focus:outline-none border p-3 rounded-lg' />
 
@@ -320,7 +380,7 @@ const Profile = () => {
                 </Link>
                 <div className='flex flex-col items-center'>
                   <p onClick={() => handleDeleteListing(listing._id)} className='text-red-800 font-semibold cursor-pointer'>Delete</p>
-                  <Link to = {`/update-listing/${listing._id}`}>
+                  <Link to={`/update-listing/${listing._id}`}>
                     <p onClick={() => handleEditListing(listing._id)} className='text-green-700 font-semibold cursor-pointer'>Edit</p>
                   </Link>
                 </div>

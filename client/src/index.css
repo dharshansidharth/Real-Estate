@@ -21,4 +21,15 @@ body{
       color: white;  /* White text */
       border-radius: 5px;  /* Rounded corners */
 }
+
+* {
+      font-family: "Red Hat Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+    }
     
+    
+    
+
+
