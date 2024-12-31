@@ -17,6 +17,8 @@ const Search = () => {
     order: 'desc'
   })
 
+  console.log(sideBarData)
+
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const searchTermFromUrl = urlParams.get('searchTerm');
@@ -65,9 +67,7 @@ const Search = () => {
       setSideBarData({ ...sideBarData, type: e.target.id })
     }
 
-    if (e.target.id === 'searchTerm') {
-      setSideBarData({ ...sideBarData, searchTerm: e.target.value })
-    }
+    
 
     if (['offer', 'parking', 'furnished'].includes(e.target.id)) {
       setSideBarData({ ...sideBarData, [e.target.id]: e.target.checked || e.target.id === 'true' ? true : false })

@@ -60,6 +60,7 @@ export const getListing = async (req , res , next) => {
 
 export const getListings = async (req , res , next) => {
   try{
+    console.log(req.query)
     const limit = parseInt(req.query.limit) || 9
     const startIndex = parseInt(req.query.startIndex) || 0
 
@@ -88,6 +89,8 @@ export const getListings = async (req , res , next) => {
     }).sort({
       [sort] : order
     }).limit(limit).skip(startIndex)
+
+
 
     return res.status(200).json(listings)
 
